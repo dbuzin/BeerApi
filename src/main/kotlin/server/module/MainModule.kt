@@ -14,6 +14,7 @@ import org.koin.ktor.ext.inject
 import org.slf4j.event.Level
 import server.route.authRoute
 import server.route.beerRoute
+import server.route.dictionariesRoute
 import server.route.jwtConfiguration
 import server.statuspages.authStatusPages
 import server.util.JwtProvider
@@ -50,6 +51,7 @@ fun Application.mainModule() {
         authRoute(HOST_PATH)
         authenticate("jwt") {
             beerRoute(HOST_PATH)
+            dictionariesRoute(HOST_PATH)
         }
     }
 }

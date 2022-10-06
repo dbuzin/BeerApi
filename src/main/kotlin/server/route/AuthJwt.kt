@@ -3,7 +3,7 @@ package server.route
 import database.dao.AccountsDao
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import util.toServerAccount
+import common.toServerAccount
 import server.util.JwtProvider
 
 fun AuthenticationConfig.jwtConfiguration(

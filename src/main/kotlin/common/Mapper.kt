@@ -1,4 +1,4 @@
-package util
+package common
 
 import database.entity.AccountsEntity
 import database.entity.BeerEntity
@@ -7,7 +7,11 @@ import kotlinx.serialization.json.Json
 import database.model.Beer as DbBeer
 import server.model.common.Account
 import server.model.common.Beer
+import server.model.common.BeerType
+import server.model.common.Country
 import server.model.request.CreateBeerRequest
+import database.model.BeerType as DbBeerType
+import database.model.Country as DbCountry
 
 fun AccountsEntity.toServerAccount() = Account(
     id = id.value.toString(),
@@ -42,5 +46,20 @@ fun List<DbBeer>.toBeer() = map {
         strength = it.strength,
         country = it.country,
         reviews = it.reviews
+    )
+}
+
+fun List<DbBeerType>.toBeerType() = map {
+    BeerType(
+        id = it.id!!,
+        name = it.name,
+        description = it.description
+    )
+}
+
+fun List<DbCountry>.toCountry() = map {
+    Country(
+        id = it.id,
+        name = it.name
     )
 }

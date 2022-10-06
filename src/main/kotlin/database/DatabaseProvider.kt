@@ -3,11 +3,12 @@ package database
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import database.dao.BeerTypesDao
+import database.dao.CountriesDao
 import database.entity.AccountsTable
 import database.entity.BeerTable
 import database.entity.BeerTypeTable
 import database.entity.CountriesTable
-import database.model.BeerType
+import database.util.FillingUtils
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -17,31 +18,11 @@ import org.koin.core.component.inject
 class DatabaseProvider: KoinComponent {
 
     private val beerTypesDao by inject<BeerTypesDao>()
+    private val countriesDao by inject<CountriesDao>()
 
-    private val types = listOf(
-        BeerType(
-            name = "lager",
-            description = ""
-        ),
-        BeerType(
-            name = "pilsner",
-            description = ""
-        ),
-        BeerType(
-            name = "staut",
-            description = ""
-        ),
-        BeerType(
-            name = "goze",
-            description = ""
-        ),
-        BeerType(
-            name = "kriek",
-            description = ""
-        )
-    )
     fun init() {
         Database.connect(hikariDev())
+        FillingUtils.getAllCountries()
         transaction {
             SchemaUtils.create(
                 AccountsTable,
@@ -49,7 +30,8 @@ class DatabaseProvider: KoinComponent {
                 CountriesTable,
                 BeerTable
             )
-            beerTypesDao.insert(types)
+            beerTypesDao.insert(FillingUtils.getAllBeerTypes())
+            countriesDao.insert(FillingUtils.getAllCountries())
         }
     }
 

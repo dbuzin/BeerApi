@@ -1,7 +1,7 @@
 package server.controller
 
 import database.dao.AccountsDao
-import util.toServerAccount
+import common.toServerAccount
 import database.model.Account as DbAccount
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

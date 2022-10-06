@@ -9,7 +9,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.transactions.transaction
-import util.toBeer
+import common.toBeer
 
 class BeerDao {
 

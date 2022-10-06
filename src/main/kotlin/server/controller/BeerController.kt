@@ -3,12 +3,13 @@ package server.controller
 import database.dao.BeerDao
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import server.model.common.Beer
 import server.model.common.FilterBody
+import server.model.common.ListResponse
 import server.model.request.CreateBeerRequest
-import server.model.response.BeerListResponse
 import server.model.response.BeerSingleResponse
 import server.model.response.CreateBeerResponse
-import util.toBeer
+import common.toBeer
 
 interface BeerController {
 
@@ -16,9 +17,9 @@ interface BeerController {
 
     suspend fun findBeerByBarcode(barcode: Long): BeerSingleResponse
 
-    suspend fun getAllBeerList(): BeerListResponse
+    suspend fun getAllBeerList(): ListResponse<Beer>
 
-    suspend fun getFilteredBeerList(filterBody: FilterBody): BeerListResponse
+    suspend fun getFilteredBeerList(filterBody: FilterBody): ListResponse<Beer>
 }
 
 class BeerControllerImpl : BeerController, KoinComponent {
@@ -39,14 +40,14 @@ class BeerControllerImpl : BeerController, KoinComponent {
         )
     }
 
-    override suspend fun getAllBeerList(): BeerListResponse {
-        return BeerListResponse(
+    override suspend fun getAllBeerList(): ListResponse<Beer> {
+        return ListResponse(
             data = beerDao.getAll().toBeer()
         )
     }
 
-    override suspend fun getFilteredBeerList(filterBody: FilterBody): BeerListResponse {
-        return BeerListResponse(
+    override suspend fun getFilteredBeerList(filterBody: FilterBody): ListResponse<Beer> {
+        return ListResponse(
             data = beerDao.getFiltered(
                 filter = filterBody.filter,
                 sort = filterBody.sort
