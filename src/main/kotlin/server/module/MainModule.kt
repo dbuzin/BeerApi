@@ -13,6 +13,7 @@ import kotlinx.serialization.json.Json
 import org.koin.ktor.ext.inject
 import org.slf4j.event.Level
 import server.route.authRoute
+import server.route.beerRoute
 import server.route.jwtConfiguration
 import server.statuspages.authStatusPages
 import server.util.JwtProvider
@@ -47,6 +48,9 @@ fun Application.mainModule() {
 
     routing {
         authRoute(HOST_PATH)
+        authenticate("jwt") {
+            beerRoute(HOST_PATH)
+        }
     }
 }
 
