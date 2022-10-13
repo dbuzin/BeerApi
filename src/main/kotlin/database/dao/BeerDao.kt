@@ -10,6 +10,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.transactions.transaction
 import common.toBeer
+import database.util.getFilterQuery
 
 class BeerDao {
 
@@ -49,7 +50,13 @@ class BeerDao {
     ) = transaction {
         val beerList = ArrayList<Beer>()
         if (sort == null) {
-            exec("SElECT * FROM ${BeerTable.tableName} WHERE ${filter.field} ${filter.operation} ${filter.value}") {
+            exec(
+                getFilterQuery(
+                    tableName = BeerTable.tableName,
+                    filter = filter,
+                    sort = null
+                )
+            ) {
                 while (it.next()) {
                     beerList.add(
                         Beer(
@@ -65,7 +72,13 @@ class BeerDao {
                 }
             }
         } else {
-            exec("SElECT * FROM ${BeerTable.tableName} WHERE ${filter.field} ${filter.operation} ${filter.value} ORDER BY ${sort.field} ${sort.direction}") {
+            exec(
+                getFilterQuery(
+                    tableName = BeerTable.tableName,
+                    filter = filter,
+                    sort = sort
+                )
+            ) {
                 while (it.next()) {
                     beerList.add(
                         Beer(

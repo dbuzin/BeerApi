@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.ir.backend.js.compile
 
 val ktor_version: String by project
 val kotlin_version: String by project
@@ -32,11 +33,14 @@ repositories {
 }
 
 dependencies {
+    //Common
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
 
+    //Logback
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
+    //Ktor server
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-server-host-common:$ktor_version")
@@ -47,13 +51,19 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
 
+    //File storage
+    implementation("com.uploadcare:uploadcare:3.5.1")
+
+    //DB
     implementation("org.jetbrains.exposed:exposed:$exposed_version")
     implementation("com.zaxxer:HikariCP:$hikari_version")
     implementation("com.h2database:h2:$h2_version")
     implementation("mysql:mysql-connector-java:$mysql_connection_version")
 
+    //Util
     implementation("org.mindrot:jbcrypt:$bcrypt_version")
 
+    //DI
     implementation("io.insert-koin:koin-ktor:$koin_version")
 }
 

@@ -1,6 +1,7 @@
 import database.DatabaseProvider
 import di.ControllersInjection
 import di.DatabaseInjection
+import di.ServiceInjection
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -23,7 +24,8 @@ fun main(args: Array<String>) {
                         single<JwtProvider> { JwtProviderImpl }
                     },
                     DatabaseInjection.koinBeans,
-                    ControllersInjection.koinBeans
+                    ControllersInjection.koinBeans,
+                    ServiceInjection.koinBeans
                 )
             }
         }

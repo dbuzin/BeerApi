@@ -4,10 +4,7 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import database.dao.BeerTypesDao
 import database.dao.CountriesDao
-import database.entity.AccountsTable
-import database.entity.BeerTable
-import database.entity.BeerTypeTable
-import database.entity.CountriesTable
+import database.entity.*
 import database.util.FillingUtils
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -28,7 +25,8 @@ class DatabaseProvider: KoinComponent {
                 AccountsTable,
                 BeerTypeTable,
                 CountriesTable,
-                BeerTable
+                BeerTable,
+                ReviewTable
             )
             beerTypesDao.insert(FillingUtils.getAllBeerTypes())
             countriesDao.insert(FillingUtils.getAllCountries())

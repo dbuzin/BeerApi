@@ -12,11 +12,9 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
 import org.koin.ktor.ext.inject
 import org.slf4j.event.Level
-import server.route.authRoute
-import server.route.beerRoute
-import server.route.dictionariesRoute
-import server.route.jwtConfiguration
+import server.route.*
 import server.statuspages.authStatusPages
+import server.statuspages.reviewsStatusPages
 import server.util.JwtProvider
 
 fun Application.mainModule() {
@@ -45,6 +43,7 @@ fun Application.mainModule() {
     }
     install(StatusPages) {
         authStatusPages()
+        reviewsStatusPages()
     }
 
     routing {
@@ -52,6 +51,7 @@ fun Application.mainModule() {
         authenticate("jwt") {
             beerRoute(HOST_PATH)
             dictionariesRoute(HOST_PATH)
+            reviewsRoute(HOST_PATH)
         }
     }
 }

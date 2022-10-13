@@ -8,5 +8,6 @@ object ControllersInjection {
         single<AuthController> { AuthControllerImpl() }
         single<BeerController> { BeerControllerImpl() }
         single<DictionariesController> { DictionariesControllerImpl() }
+        single<ReviewsController> { ReviewsControllerImpl() }
     }
 }

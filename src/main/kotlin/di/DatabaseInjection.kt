@@ -1,9 +1,6 @@
 package di
 
-import database.dao.AccountsDao
-import database.dao.BeerDao
-import database.dao.BeerTypesDao
-import database.dao.CountriesDao
+import database.dao.*
 import org.koin.dsl.module
 
 object DatabaseInjection {
@@ -12,5 +9,6 @@ object DatabaseInjection {
         single { BeerDao() }
         single { BeerTypesDao() }
         single { CountriesDao() }
+        single { ReviewsDao() }
     }
 }
