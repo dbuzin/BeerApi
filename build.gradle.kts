@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.ir.backend.js.compile
+
+project.setProperty("mainClassName", "dev.dbuzin.ApplicationKt")
 
 val ktor_version: String by project
 val kotlin_version: String by project
@@ -20,7 +21,7 @@ plugins {
 }
 
 group = "dev.dbuzin"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 application {
     mainClass.set("dev.dbuzin.ApplicationKt")

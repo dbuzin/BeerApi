@@ -18,7 +18,7 @@ class DatabaseProvider: KoinComponent {
     private val countriesDao by inject<CountriesDao>()
 
     fun init() {
-        Database.connect(hikariDev())
+        Database.connect(hikari())
         FillingUtils.getAllCountries()
         transaction {
             SchemaUtils.create(
@@ -28,33 +28,45 @@ class DatabaseProvider: KoinComponent {
                 BeerTable,
                 ReviewTable
             )
-            beerTypesDao.insert(FillingUtils.getAllBeerTypes())
-            countriesDao.insert(FillingUtils.getAllCountries())
+            if ((BeerTypeEntity.count() < 1) && (CountriesEntity.count() < 1)) {
+                beerTypesDao.insert(FillingUtils.getAllBeerTypes())
+                countriesDao.insert(FillingUtils.getAllCountries())
+            }
         }
     }
 
-    private fun hikari(): HikariDataSource {
-        val config = HikariConfig()
+    private fun hikari(devMode: Boolean = false): HikariDataSource {
         val env = System.getenv()
-        val user = env["SLACK_DB_USER"]
-        val pass = env["SLACK_DB_PASS"]
-        config.driverClassName = "com.mysql.cj.jdbc.Driver"
-        config.jdbcUrl = "jdbc:mysql://$user:$pass@192.168.0.85:3306/slack_bot_db?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"
-        config.maximumPoolSize = 3
-        config.isAutoCommit = false
-        config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-        config.validate()
+        val user = env["BEER_DB_USER"]
+        val pass = env["BEER_DB_PASS"]
+        val config = HikariConfig().apply {
+            driverClassName = if (devMode) DEV_DRIVER else PROD_DRIVER
+            jdbcUrl = getDbUrl(
+                user = user,
+                pass = pass
+            )
+            maximumPoolSize = 3
+            isAutoCommit = false
+            transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+            validate()
+        }
         return HikariDataSource(config)
     }
 
-    private fun hikariDev(): HikariDataSource {
-        val config = HikariConfig()
-        config.driverClassName = "org.h2.Driver"
-        config.jdbcUrl = "jdbc:h2:mem:test"
-        config.maximumPoolSize = 3
-        config.isAutoCommit = false
-        config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-        config.validate()
-        return HikariDataSource(config)
+    private fun getDbUrl(
+        user: String? = null,
+        pass: String? = null
+    ): String {
+        return if (user != null && pass != null) {
+            "jdbc:mysql://$user:$pass@localhost:3306/$DB_NAME?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC"
+        } else {
+            "jdbc:h2:mem:test"
+        }
+    }
+
+    private companion object {
+        const val DEV_DRIVER = "org.h2.Driver"
+        const val PROD_DRIVER = "com.mysql.cj.jdbc.Driver"
+        const val DB_NAME = "beer_review_db"
     }
 }
