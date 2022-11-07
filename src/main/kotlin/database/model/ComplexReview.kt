@@ -1,8 +1,9 @@
-package server.model.common
-import kotlinx.serialization.Serializable
+package dev.dbuzin.database.model
 
-@Serializable
-class Review(
+import database.model.Beer
+
+
+data class ComplexReview(
     val id: String = "",
     val beer: Beer?,
     val author: String,

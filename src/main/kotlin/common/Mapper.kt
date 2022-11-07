@@ -3,6 +3,7 @@ package common
 import database.entity.AccountsEntity
 import database.entity.BeerEntity
 import database.entity.ReviewEntity
+import dev.dbuzin.database.model.ComplexReview
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import server.model.common.*
@@ -38,6 +39,14 @@ fun BeerEntity.toBeer() = Beer(
     reviews = Json.decodeFromString(reviews)
 )
 
+fun DbBeer.toBeer() = Beer(
+    name = name,
+    barcode = barcode,
+    type = type,
+    strength = strength,
+    country = country,
+    reviews = reviews
+)
 fun List<DbBeer>.toBeer() = map {
     Beer(
         name = it.name,
@@ -72,21 +81,21 @@ fun CreateReviewRequest.toDataBaseReview(urls: List<String>) = DbReview(
     rate = rate,
     reviewText = reviewText
 )
-fun ReviewEntity.toReview() = Review(
-    id = id.value.toString(),
-    author = author.toString(),
-    beerId = beerId,
+fun ComplexReview.toReview() = Review(
+    id = id,
+    author = author,
+    beer = beer?.toBeer(),
     date = date,
-    photos = Json.decodeFromString(photos),
+    photos = photos,
     rate = rate,
     reviewText = reviewText
 )
 
-fun List<DbReview>.toReviews() = map {
+fun List<ComplexReview>.toReviews() = map {
     Review(
         id = it.id,
         author = it.author,
-        beerId = it.beerId,
+        beer = it.beer?.toBeer(),
         date = it.date,
         photos = it.photos,
         rate = it.rate,

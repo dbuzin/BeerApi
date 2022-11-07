@@ -1,3 +1,5 @@
+package dev.dbuzin
+
 import database.DatabaseProvider
 import di.ControllersInjection
 import di.DatabaseInjection
@@ -14,7 +16,7 @@ import server.util.JwtProviderImpl
 fun main(args: Array<String>) {
     embeddedServer(
         factory = Netty,
-        port = 8080
+        port = 80
     ) {
         module {
             install(Koin) {
